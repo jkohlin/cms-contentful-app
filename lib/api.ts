@@ -28,21 +28,39 @@ const POST_GRAPHQL_FIELDS = `
   }
 `
 const PUFF_GRAPHQL_FIELDS = `
-             namn
+      postListTitle
+      namn
       colors {
         backgroundColor {
           namn
           hexCode
         }
       }
-      posterCollection{
-        items{
+      posterCollection(limit: 3) {
+        items {
+          linkedFrom {
+            blockPostReferenceBlockCollection(limit: 3) {
+              items {
+                showThumbnail
+                altTitle
+                showThumbnail
+                showTitle
+                showLead
+                colors {backgroundColor{hexCode}}
+              }
+            }
+          }
+          content {
+            json
+          }
           title
-          
-	coverImage{url}
+          slug
+          coverImage {
+            url
+          }
         }
       }`
-
+//posterCollection > items  är faktiskaposts
 async function fetchGraphQL(query: string, preview = false): Promise<any> {
     return fetch(`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`, {
         method: 'POST',
@@ -133,7 +151,6 @@ const fetchEntries = async (contentType: string, preview = false) => {
       }
     }
   `
-
     const response = await fetchGraphQL(query, preview)
     return response.data[`${contentType}Collection`].items
 }
