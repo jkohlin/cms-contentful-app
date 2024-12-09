@@ -36,7 +36,7 @@ const PUFF_GRAPHQL_FIELDS = `
           hexCode
         }
       }
-      posterCollection(limit: 3) {
+      posterCollection {
         items {
           linkedFrom {
             blockPostReferenceBlockCollection(limit: 3) {
@@ -46,6 +46,7 @@ const PUFF_GRAPHQL_FIELDS = `
                 showThumbnail
                 showTitle
                 showLead
+                buttonText
                 colors {backgroundColor{hexCode}}
               }
             }
@@ -56,7 +57,7 @@ const PUFF_GRAPHQL_FIELDS = `
           title
           slug
           coverImage {
-            url
+              url(transform: { quality: 40 })
           }
         }
       }`
